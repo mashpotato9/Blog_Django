@@ -7,3 +7,7 @@ def index(request):
 def detail(request, post_id):
     # Logic to retrieve the post by post_id
     return render(request, 'details.html')
+
+def post_blog(request):
+    # Logic to handle posting a blog
+    return render(request, 'post_blog.html')

@@ -1,73 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog</title>
-    <link rel="stylesheet" href="{% static 'bootstrap-5.2.3-dist/css/bootstrap.min.css' %}">
-    <script src="{% static 'bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
-    <script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
-    <script src="{% static 'js/post_blog.js' %}"></script>
-    <style>
-        #editor-wrapper {
-            border: 1px solid #ccc;
-            z-index: 100;
-        }
-        #toolbar-container { border-bottom: 1px solid #ccc; }
-        #editor-container { height: 500px; }
-    </style>
-</head>
-<body>
-    <header class="p-3 bg-info text-white border-bottom mb-3">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <img src="{% static 'img/logo.png' %}" alt="Logo" width="45">
-        </a>
+{% extends "base.html" %}
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Post Blog</a></li>
-        </ul>
+{% block title %}Post a New Blog{% endblock %}
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
+{% block head %}
+<link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
+<script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
+<script src="{% static 'js/post_blog.js' %}"></script>
+<style>
+    #editor-wrapper {
+        border: 1px solid #ccc;
+        z-index: 100;
+    }
+    #toolbar-container { border-bottom: 1px solid #ccc; }
+    #editor-container { height: 500px; }
+</style>
+{% endblock %}
 
-        <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2">Login</button>
-          <button type="button" class="btn btn-warning">Sign-up</button>
+{% block content %}
+<h1>Post a New Blog</h1>
+<div class="mt-3">
+    <form method="post" action=" ">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
         </div>
-      </div>
-    </div>
-  </header>
-  <main class="container bg-light p-5 rounded">
-    <h1>Post a New Blog</h1>
-    <div class="mt-3">
-        <form method="post" action=" ">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Category</label>
-                <select class="form-select" name="category" required>
-                    <option value="" selected>Select a category</option>
-                    <option value="tech">Technology</option>
-                    <option value="life">Lifestyle</option>
-                    <option value="travel">Travel</option>
-                </select>
-            </div>
-            <div id="editor-wrapper">
-                <div id="toolbar-container"><!-- toolbar --></div>
-                <div id="editor-container"><!-- editor --></div>
-            </div>
-            <div class="mt-3 text-end">
-                <button type="submit" class="btn btn-warning">Post</button>
-            </div>
-        </form>
-  </main>
-</body>
-</html>
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-select" name="category" required>
+                <option value="" selected>Select a category</option>
+                <option value="tech">Technology</option>
+                <option value="life">Lifestyle</option>
+                <option value="travel">Travel</option>
+            </select>
+        </div>
+        <div id="editor-wrapper">
+            <div id="toolbar-container"><!-- toolbar --></div>
+            <div id="editor-container"><!-- editor --></div>
+        </div>
+        <div class="mt-3 text-end">
+            <button type="submit" class="btn btn-warning">Post</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

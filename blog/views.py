@@ -11,3 +11,4 @@ def detail(request, post_id):
 def post_blog(request):
     # Logic to handle posting a blog
     return render(request, 'post_blog.html')
+

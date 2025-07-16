@@ -2,3 +2,31 @@ body {
     background-color: #ced9e3;
     color: #212529;
 }
+
+  .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 5px;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .popup.success {
+      background-color: #4CAF50;
+  }
+
+  .popup.error {
+      background-color: #f44336;
+  }
+
+  .popup button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      margin-left: 10px;
+      cursor: pointer;
+  }

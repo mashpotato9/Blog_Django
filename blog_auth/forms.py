@@ -41,3 +41,16 @@ class SignupForm(forms.Form):
             capture.delete()
         
         return captcha
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(error_messages={
+        'required': 'Email is required',
+        'invalid': 'Enter a valid email address'
+    })
+    password = forms.CharField(max_length=25, min_length=6, widget=forms.PasswordInput, error_messages={
+        'required': 'Password is required',
+        'max_length': 'Password cannot exceed 25 characters',
+        'min_length': 'Password must be at least 6 characters long'
+    })
+    remember = forms.IntegerField(required=False)

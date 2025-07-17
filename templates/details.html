@@ -2,6 +2,11 @@
 
 {% block title %}{{ blog.title }}{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+{% endblock %}
+
 {% block content %}
 <h1>{{ blog.title }}</h1>
 <hr>
@@ -53,4 +58,5 @@
         {% endif %}
     </ul>
 </div>
+<script>hljs.highlightAll();</script>
 {% endblock %}

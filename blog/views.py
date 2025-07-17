@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 from django.http import JsonResponse
 from .models import Category, Blog, Comment
 from .forms import BlogForm
@@ -10,9 +10,13 @@ from .forms import BlogForm
 def index(request):
     return render(request, 'index.html')
 
-def detail(request, post_id):
-    # Logic to retrieve the post by post_id
-    return render(request, 'details.html')
+
+def detail(request, blog_id):
+    # Logic to retrieve the post by blog_id
+    blog = get_object_or_404(Blog, pk=blog_id)
+    comments = Comment.objects.filter(blog=blog).order_by('-created_at')
+    return render(request, 'details.html', context={'blog': blog, 'comments': comments})
+
 
 @login_required(login_url='blogAuth:login')
 @require_http_methods(["GET", "POST"])
@@ -43,3 +47,15 @@ def post_blog(request):
         
     # fallback for any other request method
     return render(request, 'post_blog.html', context={'form': BlogForm(), 'categories': Category.objects.all()})
+
+@require_POST
+@login_required(login_url='blogAuth:login')
+def post_comment(request):
+    blog_id = request.POST.get('blog_id')
+    content = request.POST.get('content')
+    Comment.objects.create(
+        content=content,
+        blog_id=blog_id,
+        author=request.user
+    )
+    return redirect('blog:detail', blog_id=blog_id)

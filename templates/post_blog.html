@@ -19,18 +19,18 @@
 {% block content %}
 <h1>Post a New Blog</h1>
 <div class="mt-3">
-    <form method="post" action=" ">
+    <form method="post" action="{% url 'blog:post_blog' %}">
+        {% csrf_token %}
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input type="text" class="form-control" id="title" name="title" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Category</label>
-            <select class="form-select" name="category" required>
-                <option value="" selected>Select a category</option>
-                <option value="tech">Technology</option>
-                <option value="life">Lifestyle</option>
-                <option value="travel">Travel</option>
+            <select class="form-select" name="category" id="category-selected" required>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
             </select>
         </div>
         <div id="editor-wrapper">
@@ -38,7 +38,7 @@
             <div id="editor-container"><!-- editor --></div>
         </div>
         <div class="mt-3 text-end">
-            <button type="submit" class="btn btn-warning">Post</button>
+            <button type="submit" class="btn btn-warning" id="post-button">Post</button>
         </div>
     </form>
 </div>

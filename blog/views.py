@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from .models import Category, Blog, Comment
 from .forms import BlogForm
 
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -27,15 +28,18 @@ def post_blog(request):
         if form.is_valid():
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
-            category_id = form.cleaned_data['category']
+            category_id = form.cleaned_data['category_id']
             # Logic to save the blog post
-            Blog.objects.create(
+            blog = Blog.objects.create(
                 title=title,
                 content=content,
                 category_id=category_id,
                 author=request.user
             )
-            return JsonResponse({'status': 201, 'message': 'Blog posted successfully'})
+            return JsonResponse({'message': 'Blog posted successfully', 'blog_id': blog.pk}, status=201)
         else:
             print(form.errors)
-            return JsonResponse({'status': 400, 'errors': form.errors})
+            return JsonResponse({'errors': form.errors}, status=400)
+        
+    # fallback for any other request method
+    return render(request, 'post_blog.html', context={'form': BlogForm(), 'categories': Category.objects.all()})

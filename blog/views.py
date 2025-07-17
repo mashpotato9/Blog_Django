@@ -9,7 +9,8 @@ from .forms import BlogForm
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    blogs = Blog.objects.all().order_by('-created_at')
+    return render(request, 'index.html', context={'blogs': blogs})
 
 
 def detail(request, blog_id):
@@ -66,4 +67,4 @@ def search(request):
     # /search?q=keyword
     q = request.GET.get('q')
     blogs = Blog.objects.filter(Q(title__icontains=q) | Q(content__icontains=q)).order_by('-created_at')
-    return render(request, 'search_results.html', context={'blogs': blogs, 'query': q})
+    return render(request, 'index.html', context={'blogs': blogs})

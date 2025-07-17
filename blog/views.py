@@ -1,7 +1,8 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import JsonResponse
+from django.db.models import Q
 from .models import Category, Blog, Comment
 from .forms import BlogForm
 
@@ -59,3 +60,10 @@ def post_comment(request):
         author=request.user
     )
     return redirect('blog:detail', blog_id=blog_id)
+
+@require_GET
+def search(request):
+    # /search?q=keyword
+    q = request.GET.get('q')
+    blogs = Blog.objects.filter(Q(title__icontains=q) | Q(content__icontains=q)).order_by('-created_at')
+    return render(request, 'search_results.html', context={'blogs': blogs, 'query': q})

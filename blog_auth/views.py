@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.core.mail import send_mail
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, logout
 from .models import Capture
 from .forms import SignupForm, LoginForm
 import string, random, json
@@ -25,7 +25,7 @@ def login_view(request: HttpRequest) -> HttpResponse:
                 login(request, user)
                 if not remember:
                     request.session.set_expiry(0)
-                return redirect(reverse('blog:index'))  # Redirect to the blog index page after login
+                return redirect('blog:index')  # Redirect to the blog index page after login
             else:
                 return render(request, 'login.html', {'form': form, 'error': 'Invalid email or password'})
         else:
@@ -46,7 +46,7 @@ def signup_view(request: HttpRequest) -> HttpResponse:
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             User.objects.create_user(username=username, email=email, password=password)
-            return redirect(reverse('blogAuth:login')) # Redirect to login after successful signup
+            return redirect('blogAuth:login')  # Redirect to login after successful signup
         else:
             # If the form is not valid, return the errors
             print("Form validation errors:", form.errors)
@@ -81,3 +81,7 @@ def send_captcha(request: HttpRequest) -> JsonResponse:
         recipient_list=[email],
     )
     return JsonResponse({'success': 'Captcha sent successfully'}, status=200)
+
+def logout_view(request: HttpRequest) -> HttpResponse:
+    logout(request)
+    return redirect('blog:index')
